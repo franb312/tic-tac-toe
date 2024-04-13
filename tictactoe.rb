@@ -19,10 +19,14 @@ class Game
   end
 
   def picker(player_number)
+    player_number == 1 ? 'O' : 'X'
+    puts "Player #{player_number}, choose a number: "
     chosen_number = gets.chomp.to_i
     @board[chosen_number] = 0
   end
 end
 game = Game.new
 game.picker(1)
+game.print_board
+game.picker(2)
 game.print_board
