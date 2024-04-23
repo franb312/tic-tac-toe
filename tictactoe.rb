@@ -19,10 +19,44 @@ class Game
   end
 
   def picker(player_number)
-    player_number == 1 ? 'O' : 'X'
+    marker = player_number == 1 ? 'O' : 'X'
     puts "Player #{player_number}, choose a number: "
     chosen_number = gets.chomp.to_i
-    @board[chosen_number] = 0
+    @board[chosen_number] = marker
+  end
+
+def winner?
+    winning_combinations = [
+      [1, 2, 3], [4, 5, 6], [7, 8, 9], # Rows
+      [1, 4, 7], [2, 5, 8], [3, 6, 9], # Columns
+      [1, 5, 9], [3, 5, 7]              # Diagonals
+    ]
+
+    winning_combinations.each do |combo|
+      markers = combo.map { |position| @board[position] }
+      return true if markers.uniq.length == 1 && markers[0] != nil
+    end
+
+    false
+  end
+
+
+  def play
+   winner = nil
+    2.times do
+      [1, 2].each do |player_number|
+        picker(player_number)
+        print_board
+        winner = player_number if winner?
+        break if winner
+      end
+      break if winner
+    end
+    if winner
+      puts "Player #{winner} wins!"
+    else
+      puts "It's a draw!"
+    end
   end
 end
 game = Game.new
@@ -30,3 +64,4 @@ game.picker(1)
 game.print_board
 game.picker(2)
 game.print_board
+game.play
